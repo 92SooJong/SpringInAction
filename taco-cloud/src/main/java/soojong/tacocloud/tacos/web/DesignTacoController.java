@@ -12,18 +12,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import lombok.extern.slf4j.Slf4j;
 import soojong.tacocloud.tacos.Ingredient;
 import soojong.tacocloud.tacos.Ingredient.Type;
+import soojong.tacocloud.tacos.Order;
 import soojong.tacocloud.tacos.Taco;
 import soojong.tacocloud.tacos.data.IngredientRepository;
 
 @Slf4j
 @Controller
 @RequestMapping("/design")
+@SessionAttributes("order")
 public class DesignTacoController {
 	
 	private final IngredientRepository ingredientRepo;
@@ -33,31 +37,32 @@ public class DesignTacoController {
 		this.ingredientRepo = ingredientRepo;
 	}
 	
+	@ModelAttribute(name ="order")
+	public Order order() {
+		return new Order();
+	}
+	
+	@ModelAttribute(name="taco")
+	public Taco taco() {
+		return new Taco();
+	}
 	
 	@PostMapping
-	public String processDesign(@Valid Taco design,Errors errors) {
+	public String processDesign(@Valid Taco design,Errors errors,@ModelAttribute Order order) {
 		
 		if(errors.hasErrors()) {
 			return "design";
 		}
+		// 여기작성필요.
+		Taco saved = tacoRepo.save(design);
 		
-		log.info("Processing design: " + design);
+		
 		return "redirect:/orders/current";
 	}
 	
 	@GetMapping
 	public String showDesignForm(Model model) {
-		// 재료들을 담은 ingredients 배열
-		/*
-		 * List<Ingredient> ingredients = Arrays.asList( new Ingredient("FLTO",
-		 * "Flour Tortilla", Type.WRAP), new Ingredient("COTO", "Corn Tortilla",
-		 * Type.WRAP), new Ingredient("GRBF", "Ground Beef", Type.PROTEIN), new
-		 * Ingredient("CARN", "Carnitas", Type.PROTEIN), new Ingredient("TMTO",
-		 * "Diced Tomatoes", Type.VEGGIES), new Ingredient("LETC", "Lettuce",
-		 * Type.VEGGIES), new Ingredient("CHED", "Cheddar", Type.CHEESE), new
-		 * Ingredient("JACK", "Monterrey Jack", Type.CHEESE), new Ingredient("SLSA",
-		 * "Salsa", Type.SAUCE), new Ingredient("SRCR", "Sour Cream", Type.SAUCE) );
-		 */
+		
 		
 		List<Ingredient> ingredients = new ArrayList<>();
 		ingredientRepo.findAll().forEach(i -> ingredients.add(i));
