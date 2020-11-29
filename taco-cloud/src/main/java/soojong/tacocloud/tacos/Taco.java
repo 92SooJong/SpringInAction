@@ -19,5 +19,5 @@ public class Taco {
 	private String name;
 	
 	@Size(min=1, message="적어도 1개의 재료는 선택해야합니다.")
-	private List<String> ingredients;
+	private List<Ingredient> ingredients;
 }
