@@ -23,6 +23,7 @@ import soojong.tacocloud.tacos.Ingredient.Type;
 import soojong.tacocloud.tacos.Order;
 import soojong.tacocloud.tacos.Taco;
 import soojong.tacocloud.tacos.data.IngredientRepository;
+import soojong.tacocloud.tacos.data.TacoRepository;
 
 @Slf4j
 @Controller
@@ -31,10 +32,12 @@ import soojong.tacocloud.tacos.data.IngredientRepository;
 public class DesignTacoController {
 	
 	private final IngredientRepository ingredientRepo;
+	private TacoRepository tacoRepo;
 	
 	@Autowired
-	public DesignTacoController(IngredientRepository ingredientRepo) {
+	public DesignTacoController(IngredientRepository ingredientRepo , TacoRepository tacoRepo) {
 		this.ingredientRepo = ingredientRepo;
+		this.tacoRepo = tacoRepo;
 	}
 	
 	@ModelAttribute(name ="order")
@@ -55,7 +58,7 @@ public class DesignTacoController {
 		}
 		// 여기작성필요.
 		Taco saved = tacoRepo.save(design);
-		
+		order.addDesign(saved);
 		
 		return "redirect:/orders/current";
 	}
