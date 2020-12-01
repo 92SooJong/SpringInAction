@@ -33,7 +33,7 @@ public class Order {
 	@NotBlank(message="Zip is required")
 	private String deliveryZip;
 	
-	@CreditCardNumber(message = "유효한 카드번호가 아닙니다")
+	//@CreditCardNumber(message = "유효한 카드번호가 아닙니다")
 	private String ccNumber;
 	
 	@Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",message="Must be formatted MM/YY")

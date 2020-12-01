@@ -39,7 +39,7 @@ public class JdbcOrderRepository implements OrderRepository{
 		for(Taco taco : tacos) {
 			saveTacoToOrder(taco , orderId);
 		}
-		return null;
+		return order;
 	}
 	
 	private long saveOrderDetails(Order order) {
