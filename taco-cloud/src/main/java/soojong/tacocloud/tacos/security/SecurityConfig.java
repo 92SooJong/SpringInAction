@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -16,6 +17,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	DataSource dataSource;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
@@ -31,18 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception{
 		
-		auth.ldapAuthentication()
-			.userSearchBase("ou=people")
-			.userSearchFilter("(uid={0})")
-			.groupSearchBase("ou=groups")
-			.groupSearchFilter("member={0}")
-			.contextSource()
-			.root("dc=tacocloud,dc=com")
-			.ldif("classpath:users.ldif")
-			.and()
-			.passwordCompare()
-			.passwordEncoder(new BCryptPasswordEncoder())
-			.passwordAttribute("userPasscode");
+		auth.userDetailsService(userDetailsService);
+		
+		/*
+		 * auth.ldapAuthentication() .userSearchBase("ou=people")
+		 * .userSearchFilter("(uid={0})") .groupSearchBase("ou=groups")
+		 * .groupSearchFilter("member={0}") .contextSource()
+		 * .root("dc=tacocloud,dc=com") .ldif("classpath:users.ldif") .and()
+		 * .passwordCompare() .passwordEncoder(new BCryptPasswordEncoder())
+		 * .passwordAttribute("userPasscode");
+		 */
 		
 		
 		/*
