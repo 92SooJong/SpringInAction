@@ -17,8 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	@Autowired
-	DataSource dataSource;
+	/*
+	 * @Autowired DataSource dataSource;
+	 */
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -34,14 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		http.authorizeRequests()
 			.antMatchers("/design","/orders")
-			.hasRole("ROLE_USER")
-			.antMatchers("/","/**").permitAll()
+				.access("hasRole('ROLE_USER')")
+			.antMatchers("/","/**").access("permitAll")
 			.and()
-			.formLogin()
-			.loginPage("/login")
+				.formLogin()
+					.loginPage("/login")
 			.and()
-			.logout()
-			.logoutSuccessUrl("/")
+				.logout()
+					.logoutSuccessUrl("/")
 			.and()
 			.csrf();
 		
@@ -58,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		auth.userDetailsService(userDetailsService)
 			.passwordEncoder(encoder());
+		
 		
 		/*
 		 * auth.ldapAuthentication() .userSearchBase("ou=people")
