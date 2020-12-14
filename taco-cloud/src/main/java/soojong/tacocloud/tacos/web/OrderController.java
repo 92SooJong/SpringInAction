@@ -25,19 +25,18 @@ import soojong.tacocloud.tacos.data.OrderRepository;
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("order")
-@ConfigurationProperties(prefix="taco.orders")
 public class OrderController {
 	
 	private OrderRepository orderRepo;
-	private int pageSize = 20;
 	
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
+	private OrderProps props;
 	
 	
-	public OrderController(OrderRepository orderRepo) {
+	
+	
+	public OrderController(OrderRepository orderRepo,OrderProps props) {
 		this.orderRepo = orderRepo;
+		this.props = props; // 주입되면 props가 자동으로 적용됨.
 	}
 	
 	
