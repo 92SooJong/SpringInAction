@@ -56,7 +56,7 @@
         for(var i=1; i<rows.length-1; i++){
             drawTableRow(rows[i].split('\t'),i);
         }
-        drawPageNumberButton(rows.length);
+        drawPageNumberButton(rows.length,20);
 
     }
 
@@ -76,7 +76,7 @@
         }
         td += `</tr>`
         table.innerHTML += td;
-    
+        
     }
 
     // th 그리기
@@ -152,9 +152,20 @@
     }
 
     function drawPageNumberButton(counts,splitNum){
+        
 
-        var page = counts/splitNum;
+        var page = parseInt(counts/splitNum);
+        var r = parseInt(counts%splitNum);
+        if(r>0) page += 1;
+
+        console.log("총 라인수 " + counts);
+        console.log("페이지 수 " + page);
+
         // 여기서 코드작성
+        for(var i =0; i<page; i++){
+            console.log(i);
+        }
+
 
     }
 
