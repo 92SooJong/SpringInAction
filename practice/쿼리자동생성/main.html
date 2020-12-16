@@ -20,6 +20,7 @@
 
 
 <script>
+    var allPageNo = 0;
 
     // 파일 불러오기
     function myFunction() {
@@ -41,6 +42,7 @@
             fileNameCmp.value = file.name;
             fileNameCmp.readOnly = true;
             drawTable(reader.result);
+            
         };
         reader.readAsText(file, /* optional */ "euc-kr");
     }
@@ -54,6 +56,7 @@
         for(var i=1; i<rows.length-1; i++){
             drawTableRow(rows[i].split('\t'),i);
         }
+        drawPageNumberButton(rows.length);
 
     }
 
@@ -61,12 +64,15 @@
     function drawTableRow(tdList,rownum){
         var td = ''
         var style = "";
+
+        // 갯수를 20개까지만 화면에 출력한다. 나머지는 숨김처리
         if(rownum > 20){
             var style = 'style = "display:none;"';
         } 
+        
         td += `<tr id="tr_"${rownum} ${style}>`
         for(var i=0; i<tdList.length; i++){
-            td += `<td id=td_`+rownum+`_`+i+`>${tdList[i]}</td>`;
+            td += `<td id=td_`+rownum+`_`+i+`>${tdList[i]}</td>`; 
         }
         td += `</tr>`
         table.innerHTML += td;
@@ -142,6 +148,13 @@
         }
 
         return results;
+
+    }
+
+    function drawPageNumberButton(counts,splitNum){
+
+        var page = counts/splitNum;
+        // 여기서 코드작성
 
     }
 

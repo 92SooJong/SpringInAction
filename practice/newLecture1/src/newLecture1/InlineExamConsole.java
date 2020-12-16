@@ -4,6 +4,7 @@ public class InlineExamConsole implements ExamConsole {
 	
 	private Exam exam;
 	
+	
 	public InlineExamConsole(Exam exam) {
 		this.exam = exam;
 	}
