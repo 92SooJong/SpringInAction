@@ -5,16 +5,17 @@
 <h1>The onclick Event</h1>
 <p>The onclick event is used to trigger a function when an element is clicked on.</p>
 <input id="input_fileName" type="text" />
-<button onclick="myFunction()">파일 불러오기</button>
-<div id="output">...</div>
+<button onclick="myFunction()">파일 불러오기</button> 
+<input id="input_tableName" type="text" />
+<button onclick="createInsertSentence()">INSERT문 생성</button>
+
 
 <table id="table" border="1" >
 </table>
 
 
-<input id="input_tableName" type="text" />
-<button onclick="createInsertSentence()">INSERT문 생성</button>
 
+<div id="resultQuery"></div>
 
 
 
@@ -59,13 +60,17 @@
     // td 그리기
     function drawTableRow(tdList,rownum){
         var td = ''
-        td += `<tr>`
+        var style = "";
+        if(rownum > 20){
+            var style = 'style = "display:none;"';
+        } 
+        td += `<tr id="tr_"${rownum} ${style}>`
         for(var i=0; i<tdList.length; i++){
             td += `<td id=td_`+rownum+`_`+i+`>${tdList[i]}</td>`;
         }
         td += `</tr>`
         table.innerHTML += td;
-
+    
     }
 
     // th 그리기
@@ -87,16 +92,27 @@
         }
         var headerList = getTableTh();
         var tableName = tableNameObj.value;
-        var prefix = "INSERT INTO "
+        var prefix = "INSERT INTO ";
+        var surfix = " VALUES";
 
         // INSERT INTO 테이블명 ( 컬럼1, 컬럼2, 컬럼3... ) VALUES (데이터1, 데이터2, 데이터3 ...);
         var columnNames = coverWithBlank(headerList.join(","));
-        var queryPrefix = prefix + tableName + columnNames;
+        var queryPrefix = prefix + tableName + columnNames+surfix;
 
         var results = getTableTr();
-        console.log(results);
+
+        for(var i =0 ; i<results.length; i++){
+            var wholeQuery = "<h>"+queryPrefix.concat(removeEnter(results[i])) + ";</h><br/>";
+            document.getElementById("resultQuery").innerHTML += wholeQuery;
+        }
+
 
     }
+    
+    function removeEnter(word){
+        return word.replace("\n","");
+    }
+
 
     // 테이블의 th 가져오기.
     function getTableTh(){
