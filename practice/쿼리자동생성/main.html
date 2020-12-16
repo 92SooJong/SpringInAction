@@ -78,20 +78,61 @@
         table.innerHTML += head;
     }
 
+    // Insert 쿼리 작성
     function createInsertSentence(){
-        var tableNameObj = document.getElementById("input_tableName");       
+        var tableNameObj = document.getElementById("input_tableName");
         if(tableNameObj.value == "") {
             alert("테이블 명이 입력되지 않았습니다.")
             return;
         }
+        var headerList = getTableTh();
         var tableName = tableNameObj.value;
         var prefix = "INSERT INTO "
 
+        // INSERT INTO 테이블명 ( 컬럼1, 컬럼2, 컬럼3... ) VALUES (데이터1, 데이터2, 데이터3 ...);
+        var columnNames = coverWithBlank(headerList.join(","));
+        var queryPrefix = prefix + tableName + columnNames;
+
+        var results = getTableTr();
+        console.log(results);
+
+    }
+
+    // 테이블의 th 가져오기.
+    function getTableTh(){
+        var table = document.getElementById('table');
+        var header = table.rows[0].cells;
+        var headerList = [];
+        for(var i=0; i<header.length; i++){
+            console.log(header[i].innerHTML);
+            headerList.push(header[i].innerHTML.replace("\n",""));
+        }
+        return headerList;
+    }
+
+    function getTableTr(){
+        var table = document.getElementById('table');
+        var results = [];
+        var rows = table.rows
+        for(var i=1; i<rows.length; i++){
+            var datas = "";
+            var row = rows[i].cells;
+            for(var j=0; j<row.length; j++){
+                var comma = ","
+                if(j == row.length - 1) comma =""
+                datas += row[j].innerHTML + comma;
+            }
+            results.push(coverWithBlank(datas));
+        }
+
+        return results;
 
     }
 
 
-
+    function coverWithBlank(word){
+        return "(".concat(word).concat(")");
+    }
 
 
 
