@@ -2,20 +2,17 @@
 <html>
 <body>
 
-<h1>The onclick Event</h1>
-<p>The onclick event is used to trigger a function when an element is clicked on.</p>
-<input id="input_fileName" type="text" />
-<button onclick="myFunction()">파일 불러오기</button> 
-<input id="input_tableName" type="text" />
-<button onclick="createInsertSentence()">INSERT문 생성</button>
+    <h1>The onclick Event</h1>
+    <p>The onclick event is used to trigger a function when an element is clicked on.</p>
+    <input id="input_fileName" type="text" />
+    <button onclick="myFunction()">파일 불러오기</button> 
+    <input id="input_tableName" type="text" />
+    <button onclick="createInsertSentence()">INSERT문 생성</button>
 
 
-<table id="table" border="1" >
-</table>
-
-
-
-<div id="resultQuery"></div>
+    <table id="table" border="1" ></table>
+    <div id="pageNumber"></div>
+    <div id="resultQuery"></div>
 
 
 
@@ -161,14 +158,22 @@
         console.log("총 라인수 " + counts);
         console.log("페이지 수 " + page);
 
-        // 여기서 코드작성
+        // 페이지 버튼 생성
+        var div = document.getElementById('pageNumber');
         for(var i =0; i<page; i++){
-            console.log(i);
+            var button = `<input type='button' id=${i} value='확인${i}' onclick='view()' />`;
+            div.innerHTML += button;
         }
 
 
     }
 
+    function view(){
+        console.log("디스");
+        console.log(this.event);
+        
+        
+    }
 
     function coverWithBlank(word){
         return "(".concat(word).concat(")");
