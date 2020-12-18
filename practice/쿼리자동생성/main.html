@@ -158,21 +158,36 @@
         console.log("총 라인수 " + counts);
         console.log("페이지 수 " + page);
 
-        // 페이지 버튼 생성
+        // 버튼 생성
         var div = document.getElementById('pageNumber');
         for(var i =0; i<page; i++){
-            var button = `<input type='button' id=${i} value='확인${i}' onclick='view()' />`;
+            var button = `<input type='button' id=page_${i+1} value='${i+1}' onclick='btn_change_onclick(this)' />`;
             div.innerHTML += button;
         }
 
 
     }
 
-    function view(){
-        console.log("디스");
-        console.log(this.event);
+    // 페이지 버튼 이벤트처리 
+    function btn_change_onclick(event){
         
+        var pageNum = event.id.split("_")[1];
+        console.log(pageNum);
+
+        // 1페이지의 경우 1~20까지의 row를 보여줘야한다. 2페이지의 경우 21~40까지의 row를 보여줘야한다
+        // 테이블 row채번 tr_행번호
+        var start = 1 + (pageNum-1) * 20
+        var end = (pageNum * 20)
+        for(var i = start; i<end; i++){
+            // 왜 null??  TODO
+            var row = document.getElementById("tr_"+i);
+            console.log(row);
+        }
         
+
+
+
+
     }
 
     function coverWithBlank(word){
