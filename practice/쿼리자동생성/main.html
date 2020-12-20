@@ -10,7 +10,11 @@
     <button onclick="createInsertSentence()">INSERT문 생성</button>
 
 
-    <table id="table" border="1" ></table>
+    <table id="table" border="1" >
+        <thead id="table_thead"></thead>
+        <tbody id="table_tbody"></tbody>
+
+    </table>
     <div id="pageNumber"></div>
     <div id="resultQuery"></div>
 
@@ -44,13 +48,16 @@
         reader.readAsText(file, /* optional */ "euc-kr");
     }
 
-    // 파일값 입력으로 받아서 table에 그리기
+    // 테이블과 tr 그리기
     function drawTable(result){
-        var table = document.getElementById('table'); 
         
         rows = result.split('\n');
         drawTableHeader(rows[0].split('\t'))
-        for(var i=1; i<rows.length-1; i++){
+        
+        console.log("전체 확인");
+        console.log(rows);
+
+        for(var i=1; i<rows.length; i++){
             drawTableRow(rows[i].split('\t'),i);
         }
         drawPageNumberButton(rows.length,20);
@@ -66,13 +73,17 @@
         if(rownum > 20){
             var style = 'style = "display:none;"';
         } 
+        var tbody = document.getElementById('table_tbody')
+
         
-        td += `<tr id="tr_"${rownum} ${style}>`
+        
+
+        td += `<tr id="tr_${rownum}" ${style}>`
         for(var i=0; i<tdList.length; i++){
             td += `<td id=td_`+rownum+`_`+i+`>${tdList[i]}</td>`; 
         }
         td += `</tr>`
-        table.innerHTML += td;
+        tbody.innerHTML += td;
         
     }
 
@@ -80,10 +91,13 @@
     function drawTableHeader(headList){
         var head = ''
         
+        
         for(var i=0; i<headList.length; i++){
             head += `<th id=th_0_`+i.toString()+`>${headList[i]}</th>`;
         }
-        table.innerHTML += head;
+
+        var thead = document.getElementById('table_thead');
+        thead.innerHTML += head;
     }
 
     // Insert 쿼리 작성
@@ -172,23 +186,33 @@
     function btn_change_onclick(event){
         
         var pageNum = event.id.split("_")[1];
-        console.log(pageNum);
+        
+        hideAllTrTag();
+
 
         // 1페이지의 경우 1~20까지의 row를 보여줘야한다. 2페이지의 경우 21~40까지의 row를 보여줘야한다
         // 테이블 row채번 tr_행번호
         var start = 1 + (pageNum-1) * 20
         var end = (pageNum * 20)
         for(var i = start; i<end; i++){
-            // 왜 null??  TODO
             var row = document.getElementById("tr_"+i);
-            console.log(row);
+            
+            row.style.display ="";
         }
         
-
-
-
-
     }
+
+    function hideAllTrTag(){
+        var tbody = document.getElementById('table').getElementsByTagName("tbody"); 
+        
+        console.log("자식노드");
+        var tbodyElements = tbody[0].rows;
+        for(var i=0; i<tbodyElements.length; i++){
+            tbodyElements[i].style.display= "none";
+        }
+        
+    }
+
 
     function coverWithBlank(word){
         return "(".concat(word).concat(")");
